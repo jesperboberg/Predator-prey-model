@@ -19,6 +19,3 @@ def createRandomForest(size,density):
             forest[randX,randY] = 1
             count += 1
     return forest
-
-
-    
