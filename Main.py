@@ -16,11 +16,23 @@ def main():
     p1 = paraDict['para1']
     print(paraDict['para3'])
     print(p1)
-    prob = growthProb(100,20,50,2)
-    print(prob[0])
-    print(prob[1])
-    print(prob[2])
-    print(prob[3])
+    current = 1
+    preyForest = 100
+    predatorForest = 20
+    preyField = 100
+    predatorField = 20
+    while current < 500:
+        prob = growthProb(preyForest,predatorForest,preyField,predatorField)
+        preyForest += prob[0]*preyForest
+        predatorForest += prob[1]*predatorForest
+        preyField += prob[2]*preyField
+        predatorField += prob[3]*predatorField
+        print("It: " + str(current))
+        print(preyForest)
+        print(predatorForest)
+        print(preyField)
+        print(predatorField)
+        current += 1
 
 
 main()

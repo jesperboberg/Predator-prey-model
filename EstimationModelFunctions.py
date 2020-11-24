@@ -7,6 +7,7 @@ import numpy as np
 import Parameters
 import random
 
+
 def preyGrowthPatchEst(nPrey,nPredator,preyParam,environmentalParam,environmentType):
     a = preyParam['a']
     b = preyParam['b']
@@ -29,7 +30,7 @@ def predatorGrowthPatchEst(nPrey,nPredator,predatorParameters,environmentalParam
     v = predatorParameters['v']
     alpha = environmentalParam['alpha']
 
-    dN = alpha[1, 0]*nPrey*nPredator - v*nPredator
+    dN = (alpha[1, 0]*nPrey - v)*nPredator
     return dN
 
 def growthEst(nPreyForest,nPredatorForest,nPreyField,nPredatorField):
@@ -57,9 +58,9 @@ def growthProb(nPreyForest,nPredatorForest,nPreyField,nPredatorField):
     dNPredatorField = dN[3]
 
     probPreyForest = dNPreyForest/nPreyForest
-    preobPredForest = dNPredatorForest/nPredatorForest
+    probPredForest = dNPredatorForest/nPredatorForest
     probPreyField = dNPreyField/nPreyField
     probPredField = dNPredatorField/nPredatorField
 
-    prob = [probPreyForest, preobPredForest, probPreyField, probPredField]
+    prob = [probPreyForest, probPredForest, probPreyField, probPredField]
     return prob
