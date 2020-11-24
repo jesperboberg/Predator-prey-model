@@ -5,7 +5,9 @@ Created on 20 Nov 2020
 '''
 
 def parameters():
-    para1 = 5
-    para2 = 12
-    para3 = 'x'
+    forestSize = 100 # Right now N*N, could be made into M*N
+    preyPopulationSize = 50
+    predatorPopulationSize = 5
+    timeSteps = 100
+
     return locals()
