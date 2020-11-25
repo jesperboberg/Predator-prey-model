@@ -6,9 +6,10 @@ Created on 20 Nov 2020
 import numpy as np
 
 def parameters():
-    para1 = 5
-    para2 = 12
-    para3 = 'x'
+    forestSize = 100 # Right now N*N, could be made into M*N
+    preyPopulationSize = 50
+    predatorPopulationSize = 5
+    timeSteps = 100
     return locals()
 
 # Tmp Parameters based on Eq(20 and 22) in
@@ -44,4 +45,5 @@ def preyParameters():
 
 def predatorParameters(): #Tmp values
     v = 0.05
+
     return locals()
