@@ -14,12 +14,13 @@ import matplotlib.pyplot as plt
 
 
 def main():
+    #Deterministic model
     current = 0
     preyForest = [1000]
     predatorForest = [100]
     preyField = [1000]
     predatorField = [100]
-    while current < 5000:
+    while current < 200:
         prob = growthProb(preyForest[current],predatorForest[current],preyField[current],predatorField[current])
         preyForest.append((1+prob[0])*preyForest[current])
         predatorForest.append((1+prob[1])*predatorForest[current])
@@ -31,9 +32,4 @@ def main():
     plt.plot(x, preyForest,'b',x,predatorForest,'r',x,preyField,'g',x,predatorField,'orange')
     plt.show()
 
-#        print("It: " + str(current))
-#        print(preyForest)
-#        print(predatorForest)
-#        print(preyField)
-#        print(predatorField)
 main()

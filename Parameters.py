@@ -24,7 +24,7 @@ def environmentParameters():
     v = predParam['v']
     alpha = np.array([[0, 1/r], [v/(K*0.1), 0]])  # Interraction
     alphaScaleForest = 1
-    alphaScaleField = 1.35
+    alphaScaleField = 1.355
     rScaleForest = 1
     rScaleField = 0.6
     hScaleForest = 1
