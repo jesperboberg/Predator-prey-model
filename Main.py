@@ -17,10 +17,10 @@ def main():
     print(paraDict['para3'])
     print(p1)
     current = 1
-    preyForest = 100
+    preyForest = 600
     predatorForest = 20
     preyField = 100
-    predatorField = 20
+    predatorField = 10
     while current < 500:
         prob = growthProb(preyForest,predatorForest,preyField,predatorField)
         preyForest += prob[0]*preyForest

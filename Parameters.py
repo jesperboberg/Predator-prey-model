@@ -17,7 +17,7 @@ def parameters():
 def environmentParameters():
     gridSize = 100
     Q = 2                       # Nr of patches
-    alpha = np.array([[0, 0.0002], [0.000125, 0]])  # Interraction
+    alpha = np.array([[0, 0.002], [0.000125, 0]])  # Interraction
     rScaleForest = 1
     rScaleField = 0.6
     hScaleForest = 1
