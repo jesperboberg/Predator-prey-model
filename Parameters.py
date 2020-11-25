@@ -17,7 +17,14 @@ def parameters():
 def environmentParameters():
     gridSize = 100
     Q = 2                       # Nr of patches
-    alpha = np.array([[0, 0.002], [0.000125, 0]])  # Interraction
+    preyParam = preyParameters()
+    predParam = predatorParameters()
+    r = preyParam['r']
+    K = preyParam['K']
+    v = predParam['v']
+    alpha = np.array([[0, 1/r], [v/(K*0.1), 0]])  # Interraction
+    alphaScaleForest = 1
+    alphaScaleField = 1.35
     rScaleForest = 1
     rScaleField = 0.6
     hScaleForest = 1
@@ -26,10 +33,11 @@ def environmentParameters():
 
 
 def preyParameters():
-    r = 0.02           # Growth rate of popoulation
-    a = 0.01           # Static component of linear model (by Iwao)
-    b = 1           # Linear component of linear model (by Iwao)
-    h = 0.02/500           # Intrinsic limitations on growth r/K (K carrying capacity)
+    r = 0.02            # Growth rate of popoulation
+    K = 5000             # Carrying capacity
+    a = 10             # Static component of linear model (by Iwao)
+    b = 1               # Linear component of linear model (by Iwao)
+    h = r/K             # Intrinsic limitations on growth r/K (K carrying capacity)
 
     return locals()
 
