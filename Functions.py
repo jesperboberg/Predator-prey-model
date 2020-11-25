@@ -5,8 +5,8 @@ Created on 20 Nov 2020
 '''
 import numpy as np
 import random
+from Parameters import parameters
 
-from Basic_model.Parameters import parameters
 
 def createLattice(forestSize,preyPop,predatorPop):
     lattice = []
@@ -21,7 +21,12 @@ def createLattice(forestSize,preyPop,predatorPop):
         i = predator[0]
         j = predator[1]
         lattice[i][j].append('predator')
+    for prey in preyPop:
+        assert lattice[prey[0]][prey[1]]
+    for predator in predatorPop:
+        assert lattice[predator[0]][predator[1]]
     return lattice
+
 
 def moveRandom(animal,animalList,lattice): # Need to change in this to create field, this just works for closed forest
     paraList = parameters()
@@ -36,31 +41,29 @@ def moveRandom(animal,animalList,lattice): # Need to change in this to create fi
         lattice[animal[0]][animal[1]+1].append(animal[2])
         lattice[animal[0]][animal[1]].remove(animal[2])
         animalList.remove(animal)
-        animalList.append([animal[0]+1,animal[1],animal[2]])
+        animalList.append([animal[0],animal[1]+1,animal[2]])
     if(r == 3 and animal[0] > 0):
         lattice[animal[0]-1][animal[1]].append(animal[2])
         lattice[animal[0]][animal[1]].remove(animal[2])
         animalList.remove(animal)
-        animalList.append([animal[0]+1,animal[1],animal[2]])            
+        animalList.append([animal[0]-1,animal[1],animal[2]])
     if(r == 4 and animal[1] > 0):
         lattice[animal[0]][animal[1]-1].append(animal[2])
         lattice[animal[0]][animal[1]].remove(animal[2])
         animalList.remove(animal)
-        animalList.append([animal[0]+1,animal[1],animal[2]])            
+        animalList.append([animal[0],animal[1]-1,animal[2]])
     return lattice,animalList    
-        
+
+
 def updateLattice(lattice,preyList):
-    print('hmm')
-    for row in lattice[:]:
-        for lis in row:
-            if(len(lis) > 1):
+    for i, row in enumerate(lattice):
+        for j, lis in enumerate(row):
+            if len(lis) > 1 and 'predator' in lis:
                 for animal in lis:
-                    if(animal[2] == 'predator'):
-                        predatorInList = True
-                for animal in lis:
-                    if(animal[2] == 'prey' and predatorInList):
-                        preyList.remove(animal)
-                        lattice[animal[0]][animal[1]].remove(animal[2])
+                    if animal == 'prey':
+                        preyList.remove([i,j,animal])
+                        lattice[i][j].remove(animal)
+
     return lattice,preyList
 
 def createRandomPrey(paraDict):
@@ -68,7 +71,11 @@ def createRandomPrey(paraDict):
     amount = paraDict['preyPopulationSize']
     forestSize = paraDict['forestSize']
     for i in range(amount):
-        preyPopulation.append([random.randint(0,forestSize-1),random.randint(0,forestSize-1),'prey'])
+        x = random.randint(0,forestSize-1)
+        y = random.randint(0,forestSize-1)
+        assert x < forestSize
+        assert y < forestSize
+        preyPopulation.append([x,y,'prey'])
     return preyPopulation
 
 def createRandomPredator(paraDict):
@@ -76,7 +83,11 @@ def createRandomPredator(paraDict):
     amount = paraDict['predatorPopulationSize']
     forestSize = paraDict['forestSize']
     for i in range(amount):
-        predatorPopulation.append([random.randint(0,forestSize-1),random.randint(0,forestSize-1),'predator'])
+        x = random.randint(0,forestSize-1)
+        y = random.randint(0,forestSize-1)
+        assert x < forestSize
+        assert y < forestSize
+        predatorPopulation.append([x,y,'predator'])
     return predatorPopulation
 
 def populationSizes(forest,outsideForest):
