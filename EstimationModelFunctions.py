@@ -27,7 +27,7 @@ def preyGrowthPatchEst(nPrey,nPredator,preyParam,environmentalParam,environmentT
 
 
 
-    dN = rGrowth*nPrey-nPrey*hLimit*(a+b*nPrey+1)-hLimit*alpha01*nPredator*nPrey
+    dN = rGrowth*nPrey-nPrey*hLimit*(a+b*nPrey+1)#-hLimit*alpha01*nPredator*nPrey
     return dN
 
 
@@ -86,3 +86,11 @@ def growthProb(nPreyForest,nPredatorForest,nPreyField,nPredatorField):
         probPredField = dNPredatorField/nPredatorField
     prob = [probPreyForest, probPredForest, probPreyField, probPredField]
     return prob
+
+def modelForest(preyPopSize,predatorPopSize):
+    prob = growthProb(preyPopSize,predatorPopSize,0,0)    
+    return [prob[0],prob[1]]
+
+def modelField(preyPopSize,predatorPopSize):
+    prob = growthProb(0,0,preyPopSize,predatorPopSize)    
+    return [prob[2],prob[3]]
