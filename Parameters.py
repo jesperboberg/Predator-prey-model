@@ -9,7 +9,7 @@ def parameters():
     forestSize = 100 # Right now N*N, could be made into M*N
     preyPopulationSize = 1000
     predatorPopulationSize = 100
-    timeSteps = 200
+    timeSteps = 5000
     timeStepModel = 10
     return locals()
 
@@ -26,7 +26,7 @@ def environmentParameters():
     v = predParam['v']
     alpha = np.array([[0, 1/r], [v/(K*0.1), 0]])  # Interraction
     alphaScaleForest = 1
-    alphaScaleField = 1.355
+    alphaScaleField = 1.2
     rScaleForest = 1
     rScaleField = 0.6
     hScaleForest = 1
@@ -37,7 +37,7 @@ def environmentParameters():
 def preyParameters():
     r = 0.02            # Growth rate of popoulation
     K = 5000             # Carrying capacity
-    a = 10             # Static component of linear model (by Iwao)
+    a = 0             # Static component of linear model (by Iwao)
     b = 1               # Linear component of linear model (by Iwao)
     h = r/K             # Intrinsic limitations on growth r/K (K carrying capacity)
 

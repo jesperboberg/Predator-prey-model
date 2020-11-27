@@ -91,7 +91,6 @@ def addPrey(lattice,preyList,change):
             temp = preyList.pop(r)
             lattice[temp[0]][temp[1]].remove('prey')
             change += 1
-            print('Possible error, prey change negative')
         if(change > 0):
             x = random.randint(0,len(lattice[0])-1)
             y = random.randint(0,len(lattice[0])-1)
