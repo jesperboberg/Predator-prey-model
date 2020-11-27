@@ -66,6 +66,39 @@ def updateLattice(lattice,preyList):
 
     return lattice,preyList
 
+def addPredators(lattice,predList,change):
+    while(True):
+        if(change == 0):
+            return lattice,predList
+        if(change < 0):
+            r = random.randint(0,len(predList)-1)
+            temp = predList.pop(r)
+            lattice[temp[0]][temp[1]].remove('predator')
+            change += 1
+        if(change > 0):
+            x = random.randint(0,len(lattice[0])-1)
+            y = random.randint(0,len(lattice[0])-1)
+            lattice[x][y].append('predator')
+            predList.append([x,y,'predator'])
+            change -= 1 
+
+def addPrey(lattice,preyList,change):
+    while(True):
+        if(change == 0):
+            return lattice,preyList
+        if(change < 0):
+            r = random.randint(0,len(preyList)-1)
+            temp = preyList.pop(r)
+            lattice[temp[0]][temp[1]].remove('prey')
+            change += 1
+            print('Possible error, prey change negative')
+        if(change > 0):
+            x = random.randint(0,len(lattice[0])-1)
+            y = random.randint(0,len(lattice[0])-1)
+            lattice[x][y].append('prey')
+            preyList.append([x,y,'prey'])
+            change -= 1  
+                       
 def createRandomPrey(paraDict):
     preyPopulation = []
     amount = paraDict['preyPopulationSize']
