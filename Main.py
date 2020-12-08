@@ -8,8 +8,9 @@ from Parameters import parameters
 from EstimationModelFunctions import growthProb,growthEst,modelForest,modelField
 import matplotlib
 import matplotlib.pyplot as plt
-from Functions import createLattice,moveRandom,createRandomPrey,createRandomPredator,updateLattice,addPredators,addPrey
+from Functions import createLattice,moveRandom,moveSemiRandom,movePredator,preyDensity,createRandomPrey,createRandomPredator,updateLattice,addPredators,addPrey
 import numpy as np 
+import random
 
 def mainModel():
     #Deterministic model
@@ -40,47 +41,58 @@ def mainSim():
     predPop = [paraDict['predatorPopulationSize']]    
    
     # Plot setup
-    '''plt.ion()
+    '''
+    plt.ion()
     fig, ax = plt.subplots()
     x = [prey[0] for prey in preyPopulationForest]
     y = [prey[1] for prey in preyPopulationForest]
-    sc1 = ax.scatter(x,y,color = 'blue', s = 1)
+    sc1 = ax.scatter(x,y,color = 'blue', s = 1, label = 'plot1')
     x = [predator[0] for predator in predatorPopulationForest]
     y = [predator[1] for predator in predatorPopulationForest]
-    sc2 = ax.scatter(x,y,color = 'red', s = 1)
+    sc2 = ax.scatter(x,y,color = 'red', s = 1, label = 'plot2')
     plt.xlim(0,paraDict['forestSize'])
     plt.ylim(0,paraDict['forestSize'])
     plt.title('Forest with predators and prey')
-    plt.draw()'''
-
+    plt.draw()
+    '''
     # Make a random movement for every prey/predator and update plots live
     for t in range(1,paraDict['timeSteps']):
         # Change the amount of prey and predators according to the model
         if(np.mod(t,paraDict['timeStepModel']) == 0):
             prob = modelForest(len(preyPopulationForest), len(predatorPopulationForest))
             changeInPredatorPop = prob[1]*len(predatorPopulationForest)
-            changeInPredatorPop = int(np.round(changeInPredatorPop,0))
+            inte = int(np.floor(changeInPredatorPop))
+            deci = changeInPredatorPop-inte
+            r = random.random()
+            if(r < deci):
+                inte += 1
+            changeInPredatorPop = inte
             changeInPreyPop = prob[0]*len(preyPopulationForest)
             changeInPreyPop = int(np.round(changeInPreyPop,0))
             forest, predatorPopulationForest = addPredators(forest,predatorPopulationForest,changeInPredatorPop)
             forest, preyPopulationForest = addPrey(forest,preyPopulationForest,changeInPreyPop)
-        #print('Predators: ' + str(len(predatorPopulationForest)) + ' Prey: ' + str(len(preyPopulationForest)))
-        for pred in predatorPopulationForest[:]:
-            assert pred[2] in forest[pred[0]][pred[1]]
-            forest, predatorPopulationForest = moveRandom(pred, predatorPopulationForest, forest)
-        for prey in preyPopulationForest:
+        for prey in preyPopulationForest[:]:
             assert prey[2] in forest[prey[0]][prey[1]]
             forest, preyPopulationForest = moveRandom(prey, preyPopulationForest, forest)
-
+        for pred in predatorPopulationForest[:]:
+            assert pred[2] in forest[pred[0]][pred[1]]
+            densities = preyDensity(pred[0],pred[1],forest,paraDict['visionRange'],paraDict['forestSize'])
+            forest, predatorPopulationForest = movePredator(pred, predatorPopulationForest, forest,densities)
         forest,preyPopulationForest = updateLattice(forest, preyPopulationForest)
-        #x = [prey[0] for prey in preyPopulationForest]
-        #y = [prey[1] for prey in preyPopulationForest]
-        #sc1.set_offsets(np.c_[x,y])
-        #x = [predator[0] for predator in predatorPopulationForest]
-        #y = [predator[1] for predator in predatorPopulationForest]
-        #sc2.set_offsets(np.c_[x,y])
-        #fig.canvas.draw_idle()
-        #plt.pause(0.5)
+        '''
+        # Update plot
+        x = [prey[0] for prey in preyPopulationForest]
+        y = [prey[1] for prey in preyPopulationForest]
+        sc1.set_offsets(np.c_[x,y])
+        x = [predator[0] for predator in predatorPopulationForest]
+        y = [predator[1] for predator in predatorPopulationForest]
+        sc2.set_offsets(np.c_[x,y])
+        fig.canvas.draw_idle()
+        L = plt.legend(loc = 'upper right')
+        L.get_texts()[0].set_text('Prey population size: ' + str(len(preyPopulationForest)))
+        L.get_texts()[1].set_text('Predator population size: ' + str(len(predatorPopulationForest)))        
+        plt.pause(0.1)
+        '''
         preyPop.append(len(preyPopulationForest))
         predPop.append(len(predatorPopulationForest))
     t = [t for t in range(0,len(preyPop))]
