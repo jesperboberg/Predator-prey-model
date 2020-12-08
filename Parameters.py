@@ -11,6 +11,7 @@ def parameters():
     predatorPopulationSize = 100
     timeSteps = 5000
     timeStepModel = 10
+    visionRange = 5
     return locals()
 
 # Tmp Parameters based on Eq(20 and 22) in
