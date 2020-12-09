@@ -9,7 +9,7 @@ def parameters():
     forestSize = 100 # Right now N*N, could be made into M*N
     preyPopulationSize = 1000
     predatorPopulationSize = 100
-    timeSteps = 5000
+    timeSteps = 200
     timeStepModel = 10
     visionRange = 5
     return locals()
