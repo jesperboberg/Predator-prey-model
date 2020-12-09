@@ -6,7 +6,7 @@ Created on 20 Nov 2020
 import numpy as np
 
 def parameters():
-    forestSize = 100 # Right now N*N, could be made into M*N
+    forestSize = 1000 # Right now N*N, could be made into M*N
     preyPopulationSize = 1000
     predatorPopulationSize = 100
     timeSteps = 200

@@ -35,45 +35,15 @@ def moveRandom(animal, animalList, lattice):
     x = animal[0]
     y = animal[1]
 
-    speed = 1
+    speed = 10
     dx = random.randint(-speed, speed)
     dy = random.randint(-speed, speed)
-    while (dx == 0 and dy == 0) or (dx != 0 and dy != 0):
-        dx = random.randint(-speed, speed)
-        dy = random.randint(-speed, speed)
     lattice[(x + dx) % forestSize][(y + dy) % forestSize].append(animal[2])
     lattice[x][y].remove(animal[2])
     animalList.remove(animal)
     animalList.append([(x + dx) % forestSize, (y + dy) % forestSize, animal[2]])
     return lattice, animalList
-    '''
 
-    if (r == 1):
-        lattice[(x + 1) % forestSize][y].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([(x + 1) % forestSize, y, animal[2]])
-        return lattice, animalList
-    if (r == 2):
-        lattice[x][(y + 1) % forestSize].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([x, (y + 1) % forestSize, animal[2]])
-        return lattice, animalList
-    if (r == 3):
-        lattice[(x - 1) % forestSize][y].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([(x - 1) % forestSize, y, animal[2]])
-        return lattice, animalList
-    if (r == 4):
-        lattice[x][(y - 1) % forestSize].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([x, (y - 1) % forestSize, animal[2]])
-        return lattice, animalList
-    return lattice, animalList
-    '''
 
 
 def moveSemiRandom(animal, animalList, lattice):
@@ -143,55 +113,37 @@ def movePredator(animal, animalList, lattice, densities):
     r = random.random()
     x = animal[0]
     y = animal[1]
-    if ('prey' in lattice[(x + 1) % forestSize][y]):
-        lattice[(x + 1) % forestSize][y].append(animal[2])
+    speed = 10
+
+    pounceRange = 5
+    count = 0
+    idx = []
+    xmin = (x-pounceRange)
+    xmax = (x+pounceRange+1)
+    ymin = (y-pounceRange)
+    ymax = (y+pounceRange+1)
+    for i in range(xmin,xmax):
+        for j in range(ymin,ymax):
+            if 'prey' in lattice[i % forestSize][j % forestSize]:
+                count += 1
+                idx.append([i % forestSize,j % forestSize])
+    if count:
+        r = random.randint(0,count-1)
+        lattice[idx[r][0]][idx[r][1]].append(animal[2])
         lattice[x][y].remove(animal[2])
         animalList.remove(animal)
-        animalList.append([(x + 1) % forestSize, y, animal[2]])
+        animalList.append([idx[r][0], idx[r][1], animal[2]])
         return lattice, animalList
-    if ('prey' in lattice[x][(y + 1) % forestSize]):
-        lattice[x][(y + 1) % forestSize].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([x, (y + 1) % forestSize, animal[2]])
-        return lattice, animalList
-    if ('prey' in lattice[(x - 1) % forestSize][y]):
-        lattice[(x - 1) % forestSize][y].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([(x - 1) % forestSize, y, animal[2]])
-        return lattice, animalList
-    if ('prey' in lattice[x][(y - 1) % forestSize]):
-        lattice[x][(y - 1) % forestSize].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([x, (y - 1) % forestSize, animal[2]])
-        return lattice, animalList
-    if (r < prob[0]):
-        lattice[(x)][(y + 1) % forestSize].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([x, (y + 1) % forestSize, animal[2]])
-        return lattice, animalList
-    if (r < prob[1]):
-        lattice[(x + 1) % forestSize][y].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([(x + 1) % forestSize, y, animal[2]])
-        return lattice, animalList
-    if (r < prob[2]):
-        lattice[x][(y - 1) % forestSize].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([x, (y - 1) % forestSize, animal[2]])
-        return lattice, animalList
-    if (r <= prob[3]):
-        lattice[(x - 1) % forestSize][y].append(animal[2])
-        lattice[x][y].remove(animal[2])
-        animalList.remove(animal)
-        animalList.append([(x - 1) % forestSize, y, animal[2]])
-        return lattice, animalList
-    # return lattice,animalList
+
+    xdir = np.sign(prob[1]-prob[3]+(2*random.random()-1))
+    dx = int(random.randint(0,speed)*xdir)
+    ydir = np.sign(prob[0]-prob[2]+(2*random.random()-1))
+    dy = int(random.randint(0,speed)*ydir)
+    lattice[(x + dx) % forestSize][(y + dy) % forestSize].append(animal[2])
+    lattice[x][y].remove(animal[2])
+    animalList.remove(animal)
+    animalList.append([(x + dx) % forestSize, (y + dy) % forestSize, animal[2]])
+    return lattice, animalList
 
 
 def countPrey(x, y, lattice):
