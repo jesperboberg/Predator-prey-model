@@ -115,8 +115,6 @@ def movePredator(animal, animalList, lattice, densities):
     prob = np.array(densities)
     prob = prob + 1
     prob = prob / sum(prob)
-    prob = np.cumsum(prob)
-    r = random.random()
     x = animal[0]
     y = animal[1]
 
