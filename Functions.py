@@ -6,6 +6,8 @@ Created on 20 Nov 2020
 import numpy as np
 import random
 from Parameters import parameters
+from Parameters import preyParameters
+from Parameters import  predatorParameters
 
 
 def createLattice(forestSize, preyPop, predatorPop):
@@ -31,11 +33,12 @@ def createLattice(forestSize, preyPop, predatorPop):
 def moveRandom(animal, animalList, lattice):
     paraList = parameters()
     forestSize = paraList['forestSize']
+    preyPara = preyParameters()
+    speed = preyPara['speed']
     r = random.randint(1, 4)
     x = animal[0]
     y = animal[1]
 
-    speed = 10
     dx = random.randint(-speed, speed)
     dy = random.randint(-speed, speed)
     lattice[(x + dx) % forestSize][(y + dy) % forestSize].append(animal[2])
@@ -106,6 +109,9 @@ def moveSemiRandom(animal, animalList, lattice):
 def movePredator(animal, animalList, lattice, densities):
     paraList = parameters()
     forestSize = paraList['forestSize']
+    predPara = predatorParameters()
+    speed = predPara['speed']
+    pounceRange = predPara['pounceRange']
     prob = np.array(densities)
     prob = prob + 1
     prob = prob / sum(prob)
@@ -113,9 +119,7 @@ def movePredator(animal, animalList, lattice, densities):
     r = random.random()
     x = animal[0]
     y = animal[1]
-    speed = 10
 
-    pounceRange = 5
     count = 0
     idx = []
     xmin = (x-pounceRange)

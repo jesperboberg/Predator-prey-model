@@ -42,10 +42,12 @@ def preyParameters():
     b = 1               # Linear component of linear model (by Iwao)
     h = r/K             # Intrinsic limitations on growth r/K (K carrying capacity)
 
+    speed = 10
     return locals()
 
 
 def predatorParameters(): #Tmp values
     v = 0.05
-
+    speed = 10
+    pounceRange = 5
     return locals()
