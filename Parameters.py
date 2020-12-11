@@ -6,14 +6,18 @@ Created on 20 Nov 2020
 import numpy as np
 
 def parameters():
-    forestSize = 1000 # Right now N*N, could be made into M*N
+    forestSize = 1000 
     preyPopulationSize = 1000
     predatorPopulationSize = 100
-    timeSteps = 200
+    timeSteps = 5000
     timeStepModel = 10
-    visionRange = 5
+    visionRange = 30
     return locals()
-
+def predatorParameters(): #Tmp values
+    v = 0.05
+    speed = 10
+    pounceRange = 2 # 10 = forest base case, 2 = field case
+    return locals()
 # Tmp Parameters based on Eq(20 and 22) in
 # Extended Lotka–Volterra equations incorporating population heterogeneity: Derivation and analysis of the predator–prey case
 # with tmp values
@@ -27,7 +31,7 @@ def environmentParameters():
     v = predParam['v']
     alpha = np.array([[0, 1/r], [v/(K*0.1), 0]])  # Interraction
     alphaScaleForest = 1
-    alphaScaleField = 1.2
+    alphaScaleField = 1.1
     rScaleForest = 1
     rScaleField = 0.6
     hScaleForest = 1
@@ -46,8 +50,3 @@ def preyParameters():
     return locals()
 
 
-def predatorParameters(): #Tmp values
-    v = 0.05
-    speed = 10
-    pounceRange = 5
-    return locals()
