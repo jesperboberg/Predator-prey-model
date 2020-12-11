@@ -9,7 +9,7 @@ from EstimationModelFunctions import growthProb,growthEst,modelForest,modelField
 import matplotlib
 import matplotlib.pyplot as plt
 from Functions import createLattice,moveRandom,moveSemiRandom,movePredator,preyDensity,createRandomPrey,createRandomPredator,updateLattice,addPredators,addPrey
-import numpy as np 
+import numpy as np
 import random
 
 def mainModel():
@@ -57,9 +57,13 @@ def mainSim():
     '''
     # Make a random movement for every prey/predator and update plots live
     for t in range(1,paraDict['timeSteps']):
+        print(t)
+        #if(len(preyPopulationForest) == 0 or len(predatorPopulationForest) == 0):
+        #    t = paraDict['timeSteps']
+        #    break
         # Change the amount of prey and predators according to the model
         if(np.mod(t,paraDict['timeStepModel']) == 0):
-            prob = modelForest(len(preyPopulationForest), len(predatorPopulationForest))
+            prob = modelField(len(preyPopulationForest), len(predatorPopulationForest))
             changeInPredatorPop = prob[1]*len(predatorPopulationForest)
             inte = int(np.floor(changeInPredatorPop))
             deci = changeInPredatorPop-inte
@@ -79,8 +83,9 @@ def mainSim():
             densities = preyDensity(pred[0],pred[1],forest,paraDict['visionRange'],paraDict['forestSize'])
             forest, predatorPopulationForest = movePredator(pred, predatorPopulationForest, forest,densities)
         forest,preyPopulationForest = updateLattice(forest, preyPopulationForest)
-        '''
+        
         # Update plot
+        '''
         x = [prey[0] for prey in preyPopulationForest]
         y = [prey[1] for prey in preyPopulationForest]
         sc1.set_offsets(np.c_[x,y])
@@ -91,18 +96,18 @@ def mainSim():
         L = plt.legend(loc = 'upper right')
         L.get_texts()[0].set_text('Prey population size: ' + str(len(preyPopulationForest)))
         L.get_texts()[1].set_text('Predator population size: ' + str(len(predatorPopulationForest)))        
-        plt.pause(0.1)
+        plt.pause(0.01)
         '''
         preyPop.append(len(preyPopulationForest))
         predPop.append(len(predatorPopulationForest))
     t = [t for t in range(0,len(preyPop))]
     plt.plot(t,preyPop,color = 'blue',label = 'Prey population size')
     plt.plot(t,predPop,color = 'red',label = 'Predator population size')
-    plt.title('Model used every tenth time step')
+    plt.title('Predator/Prey-model, forest simulation')
     plt.legend()
     plt.show()
     print(preyPop[-1])
     print(predPop[-1])
-    
+     
 mainSim()
 
